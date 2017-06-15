@@ -64,7 +64,7 @@ BasicGame.Game.prototype = {
             this.createUfo();
             this.createLife();
 			this.moveShip();
-            
+            this.collisionDetection();
 			},
 
 		//moves ship and fires bullet from keyboard controls
