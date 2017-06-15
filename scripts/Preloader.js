@@ -1,4 +1,4 @@
-
+var BasicGame = {};
 
 BasicGame.Preloader = function (game) {
 	this.ready = false;
