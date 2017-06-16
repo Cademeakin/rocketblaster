@@ -177,32 +177,6 @@ BasicGame.Game.prototype = {
 					bullet.body.velocity.y = -400;
 					}
 				}
-			},
+			};
     
-    //function executed during playing the game to check for collisions
-    collisionDetection: function () {
-        this.physics.arcade.overlap(ship, ufos, this.collideUfo, null, this);
-        this.physics.arcade.overlap(ship, lives, this.collectLife, null, this);
-        this.physics.arcade.overlap(bullets, ufos, this.destroyUfo, null, this);
-        },
-            
-            //function executed if there is collision between player and ufo. UFO is destroyed, animation & sound, reduce lifeTotal
-            collideUfo: function (ship,ufo) {
-                ufo.kill();
-                },
-                    //function executed if there is collision between ufo and bullet. UFO is destroyed, animation & sound, increase score
-                    destroyUfo: function (bullet, ufo) {
-                        ufo.kill();
-                        bullet.kill();
-                        },
-                    //function executed if there is collision between player and life. Life is destroyed, animation & sound, increase lifeTotal
-                            //collectLife: function (ship, life) {
-                                life.kill();
-                                },
-                        
-                    //Updates timer and outputs to the screen
-                                    updateTimer: function () {
-                                        seconds++;
-                                        timerText.text = 'Time: ' + seconds;
-                                        }
-};
+
