@@ -175,6 +175,7 @@ BasicGame.Game.prototype = {
 					bullet.reset(ship.x, ship.y);
 					bullet.body.velocity.y = -400;
 					}
+                }
 			},
     
     //function executed during playing the game to check for collisions
