@@ -1,4 +1,3 @@
-var BasicGame = {};
 BasicGame.Game = function (game) {};
 
 //Graphical Objects
