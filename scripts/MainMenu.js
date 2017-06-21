@@ -1,5 +1,8 @@
 BasicGame.MainMenu = function (game) { };
 
+	var startButton;
+	var starfield;
+	var logo;
 
 BasicGame.MainMenu.prototype = {
 
