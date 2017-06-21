@@ -8,7 +8,8 @@ BasicGame.Preloader.prototype = {
 
 	preload: function () {
         //Displays a loading screen message while the assets are loaded into memory
-				this.preloaderText = this.add.text(this.world.centerX, this.world.CenterY, 'loading...', {
+				this.preloaderText = this.add.text(this.world.centerX, this.world.CenterY, 'loading...',
+			{
 				fontsize: '96px',
 				fill: '#fff',
 				align: 'center'
@@ -20,9 +21,6 @@ BasicGame.Preloader.prototype = {
 			this.load.image('starfield', 'assets/starfield.png');
 			this.load.image('startButton', 'assets/startButton.png');
 			this.load.image('ship', 'assets/ship.png');
-            this.load.image('ufo', 'assets/ufo.png');
-            this.load.image('life', 'assets/lives.png');
-            this.load.image('bullet', 'assets/bullet.png');
 	},
 
 	create: function () {
