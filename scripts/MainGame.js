@@ -22,6 +22,9 @@ var timerText;
 
 //Misc Variables
 var cursors; //Keyboard control
+var gameOverText; //Game Over message
+var restartButton; //Restart game button
+var gameOver;
 
 BasicGame.Game.prototype = {
 
@@ -92,6 +95,21 @@ BasicGame.Game.prototype = {
         timer = this.time.create(false);
         seconds = 0;
         timerText.text = 'Time: ' + seconds;
+        
+        gameOverText = this.add.text(this.world.centerX, this.world.centerY-50, 'Game Over', {
+            font: '96px arial',
+            fill: '#fff',
+            align: 'center'
+            });
+        gameOverText.anchor.set(0.5);
+        //hides the gameState text
+        gameOverText.visible = false;
+        gameOver = false;
+        
+        //Create a restart button and hide on screen
+        restartButton = this.add.button((this.world.width / 2),(this.world.height / 2)+50, 'startButton', this.restartGame);
+        restartButton.anchor.set(0.5);
+        restartButton.visible = false;
 
 			 //Setting the keyboard to accept LEFT, RIGHT and SPACE input
 			 this.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR]);
@@ -103,12 +121,19 @@ BasicGame.Game.prototype = {
 	},
 
 	update: function () {
-		//execute 'createUfo','createLife','moveShip','collisionDetection' function
+        //if lifeTotal is less than 1 or seconds = 60 or gameOver variable = true then execute 'truegameOver' function
+        if (lifeTotal < 1 || seconds == 60 || gameOver===true) {
+            this.gameOver();
+        }
+        
+		//else execute 'createUfo','createLife','moveShip','collisionDetection' function
+        else{
             this.createUfo();
             this.createLife();
 			this.moveShip();
             this.collisionDetection();
-			},
+        }
+    },
 
 		//moves ship and fires bullet from keyboard controls
 			moveShip: function () {
@@ -159,7 +184,7 @@ BasicGame.Game.prototype = {
             //Generating random position in the X Axis
             var randomX = this.rnd.integerInRange(0, this.world.width - 150);
             
-            //Creating a ufo from the the ufos group and setting physics
+            //Creating a life from the the life group and setting physics
             var life = lives.create(randomX, -50, 'life');
             this.physics.enable(life, Phaser.Physics.ARCADE);
             //Generating a random velocity
@@ -187,20 +212,45 @@ BasicGame.Game.prototype = {
             //function executed if there is collision between player and ufo. UFO is destroyed, animation & sound, reduce lifeTotal
             collideUfo: function (ship,ufo) {
                 ufo.kill();
+                lifeTotal--;
+                lifeTotalText.text = 'Lives: ' + lifeTotal;
                 },
                     //function executed if there is collision between ufo and bullet. UFO is destroyed, animation & sound, increase score
                     destroyUfo: function (bullet, ufo) {
                         ufo.kill();
                         bullet.kill();
+                        score += 100;
+                        scoreText.text = 'Score: ' + score;
                         },
                     //function executed if there is collision between player and life. Life is destroyed, animation & sound, increase lifeTotal
                             collectLife: function (ship, life) {
                                 life.kill();
+                                lifeTotal++;
+                                lifeTotalText.text = 'Lives: ' + lifeTotal;
                                 },
                         
                     //Updates timer and outputs to the screen
                                     updateTimer: function () {
                                         seconds++;
                                         timerText.text = 'Time: ' + seconds;
-                                        }
+                                        },
+
+    
+    //function is executed when the game ends. Stops Ship, Kills all objects, stops timer, Display Restart Button
+    gameOver: function () {
+        ship.body.velocity.x = 0;
+        ship.body.x = (this.world.width/2)-(ship.body.width/2);
+        ufos.callAll('kill');
+        lives.callAll('kill');
+        bullets.callAll('kill');
+        gameOverText.visible = true;
+        restartButton.visible = true;
+        timer.stop();
+    },
+        
+        //Restart function, executed when restart button is pressed
+        restartGame: function () {
+            this.game.state.start('Game');
+            }
+
 };
