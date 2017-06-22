@@ -212,6 +212,9 @@ BasicGame.Game.prototype = {
             //function executed if there is collision between player and ufo. UFO is destroyed, animation & sound, reduce lifeTotal
             collideUfo: function (ship,ufo) {
                 ufo.kill();
+                var animation = this.add.sprite(ufo.body.x, ufo.body.y, 'kaboom');
+                animation.animations.add('explode');
+                animation.animations.play('explode', 30, false, true);
                 lifeTotal--;
                 lifeTotalText.text = 'Lives: ' + lifeTotal;
                 },
@@ -219,6 +222,9 @@ BasicGame.Game.prototype = {
                     destroyUfo: function (bullet, ufo) {
                         ufo.kill();
                         bullet.kill();
+                        var animation = this.add.sprite(ufo.body.x, ufo.body.y, 'kaboom');
+                        animation.animations.add('explode');
+                        animation.animations.play('explode', 30, false, true);
                         score += 100;
                         scoreText.text = 'Score: ' + score;
                         },
@@ -227,6 +233,9 @@ BasicGame.Game.prototype = {
                                 life.kill();
                                 lifeTotal++;
                                 lifeTotalText.text = 'Lives: ' + lifeTotal;
+                                var animation = this.add.sprite(life.body.x, life.body.y, 'lifeAnimation');
+                                animation.animations.add('lifeAnimation');
+                                animation.animations.play('lifeAnimation', 30, false, true);
                                 },
                         
                     //Updates timer and outputs to the screen
