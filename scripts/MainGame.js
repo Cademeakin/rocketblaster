@@ -276,7 +276,8 @@ BasicGame.Game.prototype = {
         //Restart function, executed when restart button is pressed
         restartGame: function () {
             this.game.state.start('Game');
-            }
+            },
+    
     render: function() {
     // Sprite debug info
     this.game.debug.bodyInfo(ship, 32, 100);
