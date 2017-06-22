@@ -15,6 +15,11 @@ var lifeTotal; //Players total number of lives
 var scoreText; //Text which is used to display the score
 var lifeTotalText; //Text which is used to display the number of lives
 
+//Audio Variables stores the audio in the game
+var music;
+var bulletAudio;
+var explosionAudio;
+
 //Timer Variables stores information about the timer
 var seconds; //Number of seconds game has been running
 var timer;
@@ -115,12 +120,20 @@ BasicGame.Game.prototype = {
 			 this.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR]);
 			 cursors = this.input.keyboard.createCursorKeys();
         
+        //Load the audio into memory, starting music
+      bulletAudio = this.add.audio('bullet');
+        explosionAudio = this.add.audio('explosion');
+        music = this.add.audio('music', 1, true);
+        music.play('', 0, 1, true);
+        
             //Set a TimerEvent to occur every second and start the timer
             timer.loop(1000, this.updateTimer, this);
             timer.start();
 	},
 
 	update: function () {
+        //Scroll the background
+        this.starfield.tilePosition.y += 2;
         //if lifeTotal is less than 1 or seconds = 60 or gameOver variable = true then execute 'truegameOver' function
         if (lifeTotal < 1 || seconds == 60 || gameOver===true) {
             this.gameOver();
@@ -199,6 +212,7 @@ BasicGame.Game.prototype = {
 					var bullet = bullets.getFirstExists(false);
 					bullet.reset(ship.x, ship.y);
 					bullet.body.velocity.y = -400;
+                    bulletAudio.play();
 					}
 			},
     
@@ -211,6 +225,7 @@ BasicGame.Game.prototype = {
             
             //function executed if there is collision between player and ufo. UFO is destroyed, animation & sound, reduce lifeTotal
             collideUfo: function (ship,ufo) {
+                explosionAudio.play();
                 ufo.kill();
                 var animation = this.add.sprite(ufo.body.x, ufo.body.y, 'kaboom');
                 animation.animations.add('explode');
@@ -220,6 +235,7 @@ BasicGame.Game.prototype = {
                 },
                     //function executed if there is collision between ufo and bullet. UFO is destroyed, animation & sound, increase score
                     destroyUfo: function (bullet, ufo) {
+                        explosionAudio.play();
                         ufo.kill();
                         bullet.kill();
                         var animation = this.add.sprite(ufo.body.x, ufo.body.y, 'kaboom');
